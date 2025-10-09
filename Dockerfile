@@ -13,5 +13,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 # 让端口 8001 可供此容器外的环境使用
 EXPOSE 8001
 
-# 运行 app.py
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8001"]
+# 运行 app.py，使用环境变量 PORT（Render 会自动设置）
+CMD uvicorn main:app --host 0.0.0.0 --port ${PORT:-8001}

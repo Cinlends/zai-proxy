@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: zai-proxy-api
+    runtime: docker
+    plan: free
+    region: oregon  # 或 singapore、frankfurt，选择离你最近的区域
+    healthCheckPath: /health
+    envVars:
+      - key: DEBUG
+        value: false
+      - key: LOG_LEVEL
+        value: INFO
+      - key: WORKERS
+        value: 1
+      - key: PROXY_URL
+        value: https://chat.z.ai
