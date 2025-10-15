@@ -1,9 +1,13 @@
+import base64
 import time
 import hmac
 import hashlib
 
 
-def generate_signature(e: str, t: str) -> dict:
+def generate_signature(
+    e: str,
+    t: str,
+) -> dict:
     """
     根据输入参数 e 和 t 生成签名和时间戳。
 
@@ -16,10 +20,13 @@ def generate_signature(e: str, t: str) -> dict:
     """
     # 1. 获取当前时间的毫秒级时间戳
     timestamp_ms = int(time.time() * 1000)
-    # timestamp_ms = 1759746422192
+    # timestamp_ms = 1760369828098
+
+    encoded_t = t.encode("utf-8")
+    b64_encoded_t = base64.b64encode(encoded_t).decode("utf-8")
 
     # 2. 拼接字符串
-    message_string = f"{e}|{t}|{timestamp_ms}"
+    message_string = f"{e}|{b64_encoded_t}|{timestamp_ms}"
 
     # 3. 计算 n
     n = timestamp_ms // (5 * 60 * 1000)
@@ -40,8 +47,8 @@ def generate_signature(e: str, t: str) -> dict:
 
 if __name__ == "__main__":
     # 示例用法
-    e_value = "requestId,7c30e6d9-e1fc-4970-9fc6-e27363415dda,timestamp,1759746406495,user_id,21ea9ec3-e492-4dbb-b522-fc0eaf64f0f6"
-    t_value = "写一个hello world"
+    e_value = "requestId,f0bf7b75-09f4-40db-a5c2-7f3749d46d62,timestamp,1760369828098,user_id,21ea9ec3-e492-4dbb-b522-fc0eaf64f0f6"
+    t_value = "hi"
     result = generate_signature(e_value, t_value)
     print(f"生成的签名: {result['signature']}")
     print(f"时间戳: {result['timestamp']}")
